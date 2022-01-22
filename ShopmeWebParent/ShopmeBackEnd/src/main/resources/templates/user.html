@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width;initial-scale=1.0,minimum-scale=1.0">
+
+<title>Home-Shopme Admin</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+	integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+	crossorigin="anonymous"></script>
+<link href="webjars/bootstrap/4.3.1/css/bootstrap.min.css"
+	rel="stylesheet">
+<link rel="stylesheet" type="text/css" th:href="@{/fontawesome/all.css}">
+<script src="webjars/jquery/3.4.1/jquery.min.js"></script>
+<script src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<div class="container-fluid">
+				<a class="navbar-brand" th:href="@{/}"> <img
+					th:src="@{/images/ShopmeAdminSmall.png}" /></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link " th:href="@{/user}">User</a>
+						</li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/categories}">Categories</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/brands}">Brands</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/product}">Product</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/customer}">Customer</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/shipping}">Shipping</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/orders}">Orders</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/salesReport}">Sales Report</a></li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/articles}">Articles</a></li>
+						<li class="nav-item"><a class="nav-link " th:href="@{/menu}">Menu</a>
+						</li>
+						<li class="nav-item"><a class="nav-link "
+							th:href="@{/setting}">Settings</a></li>
+
+
+					</ul>
+
+				</div>
+			</div>
+		</nav>
+		<div>
+
+			<h2>Manage Users</h2>
+			<a th:href="@{/new}"> Create New User</a>
+
+		</div>
+
+		<div th:if="${message!=null}" class="alert alert-success text-centre">
+			[[${message}]]</div>
+
+		<div>
+			<form th:action="@{/user/page/1}" class="form-inline m-3">
+				Filter:&nbsp; 
+				<input type="search" name="keyword"
+					class="form-control" /> 
+					&nbsp;&nbsp;
+					<input type="submit" value="Search" class="btn btn-primary"/>
+					&nbsp;&nbsp;
+					<input type="button" value="Clear" class="btn btn-secondary" onclick="clearField()"/>
+					
+			</form>
+		</div>
+		<div>
+			<table
+				class="table table-striped table-hover table-bordered table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+						<th>User ID</th>
+						<th>Photos</th>
+						<th>Email</th>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Roles</th>
+						<th>Enabled</th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="user : ${listUsers}">
+						<td>[[${user.id}]]</td>
+						<td><span th:if="${user.photos==null}"
+							style="color: gray; margin-left: 1.6rem;"
+							class="fas fa-portrait  fa-2x"> </span> <img
+							th:if="${user.photos !=null}"
+							th:src="@{${user.getPhotosImagePath}}" style="width: 100px" /></td>
+						<td>[[${user.email}]]</td>
+						<td>[[${user.firstname}]]</td>
+						<td>[[${user.lastname}]]</td>
+						<td>[[${user.roles}]]</td>
+						<td><a th:if="${user.enabled==true}"
+							class="fas fa-check-circle fa-2x" style="color: green;"
+							th:href="@{'/false'+${user.id}}"> </a> <a
+							th:if="${user.enabled==false}" class="fas fa-check-circle fa-2x"
+							style="color: gray;" th:href="@{'/true'+${user.id}}"> </a></td>
+						<td><a class="fas fa-edit fa-2x " style="color: green;"
+							th:href="@{'/edit'+ ${user.id}}" title="Edit this user"> </a>
+							&nbsp; <a class="fas fa-trash-alt fa-2x " style="color: red;"
+							th:href="@{'/delete'+${user.id}}" title="Delete this user"
+							onclick="alertBox()"> </a></td>
+
+					</tr>
+				</tbody>
+			</table>
+			<div class="text-center m-1">
+				<span>Showing #[[${start}]] to [[${end}]] of
+					[[${totalItems}]] users.</span>
+			</div>
+			<div class="pagination justify-content-center">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination">
+						<li class="page-item" th:if="${current!=1}"><a
+							class="page-link" th:href="@{/user/page/1}">First</a></li>
+						<li class="page-item" th:if="${current!=1}"><a
+							class="page-link" th:href="@{'/user/page/'+${current-1}}">Previous</a></li>
+						<li class="page-item"><a class="page-link"
+							th:href="@{/user/page/1}">1</a></li>
+						<li class="page-item"><a class="page-link"
+							th:href="@{/user/page/2}">2</a></li>
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/user/page/'+${current}}">...</a></li>
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/user/page/'+${endPage-1}}"> [[${endPage-1}]]</a></li>
+						<li class="page-item"><a class="page-link"
+							th:href="@{'/user/page/'+${endPage}}">[[${endPage}]]</a></li>
+						<li class="page-item" th:if="${current!=endPage}"><a
+							class="page-link" th:href="@{'/user/page/'+${current+1}}">Next</a></li>
+						<li class="page-item" th:if="${current!=endPage}"><a
+							class="page-link" th:href="@{'/user/page/'+${endPage}}">Last</a></li>
+					</ul>
+				</nav>
+			</div>
+
+
+		</div>
+		<!-- -->
+		<!-- -->
+		<footer style="text-align: center;">
+			<p>Shopme Control Panel -Copyright &copy; Shopme</p>
+		</footer>
+	</div>
+	<!-- js-->
+	<script>
+		function clearField(){
+			window.location="[[@{/user}]]";
+		}
+	</script>
+
+</body>
+
+</html>
